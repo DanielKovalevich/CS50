@@ -88,4 +88,7 @@ int main(int argc, char* argv[])
             fwrite(&buffer, BLOCK_SIZE, 1, img);
         }
     }
+    
+    fclose(img);
+    fclose(inptr);
 }
