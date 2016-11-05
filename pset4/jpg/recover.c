@@ -43,57 +43,49 @@ int main(int argc, char* argv[])
     // Output file object
     FILE* img = NULL;
     
-    while (currentJPEG < MAX_JPEG){
+    while (fread(&buffer, BLOCK_SIZE , 1, inptr) == 1){
         bool newJPG = false;
-        
-        if (fread(&buffer, BLOCK_SIZE , 1, inptr) == 1){
-            
             // Check for first few bytes of a jpg
-            if (buffer[0] == FIRST_BYTE){
-                if (buffer[1] == SECOND_BYTE){
-                    if (buffer[2] == THIRD_BYTE){
-                        switch (buffer[3]){
-                            case 0xe0:
-                            case 0xe1:
-                            case 0xe2:
-                            case 0xe3:
-                            case 0xe4:
-                            case 0xe5:
-                            case 0xe6:
-                            case 0xe7:
-                            case 0xe8:
-                            case 0xe9:
-                            case 0xea:
-                            case 0xeb:
-                            case 0xec:
-                            case 0xed:
-                            case 0xee:
-                            case 0xef:
-                                newJPG = true;
-                                startJPG = true;
-                                break;
-                        }
+        if (buffer[0] == FIRST_BYTE){
+            if (buffer[1] == SECOND_BYTE){
+                if (buffer[2] == THIRD_BYTE){
+                    switch (buffer[3]){
+                        case 0xe0:
+                        case 0xe1:
+                        case 0xe2:
+                        case 0xe3:
+                        case 0xe4:
+                        case 0xe5:
+                        case 0xe6:
+                        case 0xe7:
+                        case 0xe8:
+                        case 0xe9:
+                        case 0xea:
+                        case 0xeb:
+                        case 0xec:
+                        case 0xed:
+                        case 0xee:
+                        case 0xef:
+                            newJPG = true;
+                            startJPG = true;
+                            break;
                     }
                 }
             }
-        
-            if (startJPG){
-                // Creates the jpg files
-                if (newJPG){
-                    char title[8];
-                    // Prints the name with the correct format
-                    sprintf(title, "%03d.jpg", currentJPEG);
-                
-                    img = fopen(title, "a");
-                    currentJPEG++;
-                }
-                
-                fwrite(&buffer, BLOCK_SIZE, 1, img);
-            }
         }
-        else{
-            fclose(inptr);
-            fclose(img);
+        
+        if (startJPG){
+            // Creates the jpg files
+            if (newJPG){
+                char title[8];
+                // Prints the name with the correct format
+                sprintf(title, "%03d.jpg", currentJPEG);
+                    
+                img = fopen(title, "a");
+                currentJPEG++;
+            }
+                
+            fwrite(&buffer, BLOCK_SIZE, 1, img);
         }
     }
 }
