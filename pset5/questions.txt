@@ -1,0 +1,28 @@
+0.  What is pneumonoultramicroscopicsilicovolcanoconiosis?
+    Lung disease
+1.  According to its man page, what does getrusage do?
+    getrusage returns the pointer to a struct containing the usage statistics of the program.
+2.  Per that same man page, how many members are in a variable of type struct rusage?
+    rusage has 16 data types
+3.  Why do you think we pass before and after by reference (instead of by value) to calculate, even though we’re not changing their contents?
+    It is better on performace to send in a struct by reference. Making a copy of a struct can be unnecessicarily resource intensive.
+4.  Explain as precisely as possible, in a paragraph or more, how main goes about reading words from a file. In other words, convince us that you indeed understand how that function’s for loop works.
+    After the file is opened, the for loop gets the first letter from the file by int c = fgetc(fp). It goes through the file by getting the next letter each time with c = fgetc(fp) while c has not 
+    reached the end of the file.
+    It then goes through each of the letters, checking whether they are letters. (They can be apostrophes but not at the beginning of the word). It then consumes all of the letters except the \n.
+    Because '\n' is not a letter and not a number it goes to the last condition. Once it knows that it hit a newline character, the program knows that it is has a word. The word is then
+    checked within the dictionary. If not, it is considered misspelled. 
+5.  Why do you think we used fgetc to read each word’s characters one at a time rather than use fscanf with a format string like "%s" to read whole words at a time? Put another way, what problems might arise by relying on fscanf alone?
+    With fgetc, it is easier and more efficient to examine each of the characters. fscanf also ignore whitespace and doesn't include the newline character. 
+    This would provide problems when determining if you have reached the end of a word.
+6.  Why do you think we declared the parameters for check and load as const?
+    So that the programmer couldn't in anyway modify the contents of dictionary.
+7.  What data structure(s) did you use to implement your spell-checker? Be sure not to leave your answer at just "hash table," "trie," or the like. Expound on what’s inside each of your "nodes."
+    I implemented a trie. Inside each node was an array of pointers. Each pointer represented a character and the pointer would point to the next node. If there is no node to point to, it points to NULL.
+    Each node also contains a boolean value which determines whether or not that node is the end of a word. If so, one could follow the links of pointers up until the boolean value to get the word.
+8.  How slow was your code the first time you got it working correctly?
+    It was actually really fast. Not without errors though. I had quite a few issues infact. They were just a few lines that disrupted the whole process.
+9.  What kinds of changes, if any, did you make to your code in order to improve its performance?
+    To my current programming knowledge, there did not seem much else that I could do to fix the performance. 
+10. Do you feel that your code has any bottlenecks that you were not able to chip away at?
+    I definitely feel that I could have improved unload() so that it would have run in a more efficient manner. Load was also the biggest bottleneck but there wasn't much I could do about it.
